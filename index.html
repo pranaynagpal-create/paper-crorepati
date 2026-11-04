@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paper Crorepati</title>
+<meta name="description" content="Your ESOPs on paper, in your bank account, and if you quit at month 18. An Indian ESOP reality check that runs entirely in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Paper Crorepati">
+<meta property="og:description" content="Your ESOPs on paper vs. in your bank account. Perquisite tax, capital gains and the month-18 trap, in 30 seconds.">
+<meta property="og:url" content="https://pranaynagpal-create.github.io/paper-crorepati/">
+<meta property="og:image" content="https://pranaynagpal-create.github.io/paper-crorepati/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paper Crorepati">
+<meta name="twitter:description" content="Your ESOPs on paper vs. in your bank account. Perquisite tax, capital gains and the month-18 trap, in 30 seconds.">
+<meta name="twitter:image" content="https://pranaynagpal-create.github.io/paper-crorepati/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231C6B47'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23F4E8C8' text-anchor='middle'%3E%E2%82%B9%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  /* Layout: a grant letter you fill in, three verdict cards beneath it, a ledger of where the paper goes, then the rules and the patch list. */
+  --paper:#EDF2EC; --sheet:#F9FBF7; --ink:#122119; --ink-2:#44564C; --rule:#C7D4CA;
+  --green:#1C6B47; --on-green:#FFFFFF; --green-soft:#DCEEE3;
+  --gold:#8F6A1A; --gold-soft:#F4E8C8;
+  --red:#A8271F; --red-soft:#F7DFDB;
+  --slate:#6E7F76; --slate-soft:#D9E1DC; --blue:#3C5A78;
+  --display:"Instrument Serif","Baskerville","Times New Roman",serif;
+  --body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1613; --sheet:#16211C; --ink:#E7EEE8; --ink-2:#A9B8AE; --rule:#2B3A32;
+    --green:#5FC391; --on-green:#0E1613; --green-soft:#173427;
+    --gold:#E0B65A; --gold-soft:#3A2E12;
+    --red:#F07C72; --red-soft:#3D1A17;
+    --slate:#8A9A90; --slate-soft:#243029; --blue:#8FB0D1;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1613; --sheet:#16211C; --ink:#E7EEE8; --ink-2:#A9B8AE; --rule:#2B3A32;
+  --green:#5FC391; --on-green:#0E1613; --green-soft:#173427;
+  --gold:#E0B65A; --gold-soft:#3A2E12;
+  --red:#F07C72; --red-soft:#3D1A17;
+  --slate:#8A9A90; --slate-soft:#243029; --blue:#8FB0D1;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.mast{padding-block:40px 26px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:0 0 10px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,8vw,78px);line-height:.95;margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+.lede{max-width:60ch;font-size:18px;color:var(--ink-2);margin:0;text-wrap:pretty}
+
+/* Grant letter */
+.letter{background:var(--sheet);border:1px solid var(--rule);box-shadow:0 14px 34px -28px rgba(0,0,0,.45);margin-top:28px;padding:22px clamp(16px,4vw,36px) 26px;position:relative}
+.letter::before{content:"";position:absolute;inset:7px;border:1px solid var(--rule);pointer-events:none}
+.letter-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:0 0 16px;position:relative}
+.line{font-family:var(--display);font-size:clamp(20px,3vw,26px);line-height:1.75;margin:0 0 4px;text-wrap:pretty}
+.line input,.line select,.fine select{font:500 .82em var(--mono);color:var(--ink);background:transparent;border:0;border-bottom:2px solid var(--green);padding:0 4px 1px;border-radius:0;appearance:none;-webkit-appearance:none}
+.line input{width:5.5ch;text-align:center}
+.line input.w8{width:8ch}
+.line select,.fine select{padding-right:1.4em;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231C6B47' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center;cursor:pointer}
+.line input:focus,.line select:focus,.fine select:focus{outline:none;border-bottom-color:var(--gold);background-color:var(--green-soft)}
+.fine{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 22px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--rule)}
+.fine label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-2);min-width:0}
+.fine select{font-size:14px;color:var(--ink);width:100%;padding-bottom:3px;text-overflow:ellipsis}
+.guess{margin-top:22px;padding:16px 18px;background:var(--gold-soft);border:1px solid var(--rule)}
+.guess label{display:block;font-family:var(--display);font-size:clamp(19px,2.6vw,23px);line-height:1.35;margin-bottom:10px;text-wrap:pretty}
+.guess-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-family:var(--mono)}
+.guess-row input{font:500 18px var(--mono);color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-bottom:2px solid var(--gold);padding:6px 10px;width:min(100%,16ch);border-radius:0}
+.guess-row input:focus{outline:none;border-bottom-color:var(--green)}
+.guess-row .echo{font-size:14px;color:var(--ink-2)}
+.actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:20px}
+.btn{font:600 15px var(--body);background:var(--green);color:var(--on-green);border:0;padding:12px 22px;cursor:pointer;letter-spacing:.01em}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.privacy{font-size:13px;color:var(--ink-2);margin:0}
+
+/* Verdict cards */
+.results{margin-top:30px}
+.note{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:var(--sheet);border:1px solid var(--rule);padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;min-width:0;position:relative}
+.card .kicker{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;flex-wrap:wrap}
+.card .kicker em{font-style:normal;letter-spacing:0;text-transform:none;font-family:var(--body);color:var(--ink-2);font-size:12px}
+.card .big{font-family:var(--display);font-size:clamp(40px,5.4vw,56px);line-height:1;font-variant-numeric:tabular-nums;margin:4px 0 0;overflow-wrap:anywhere}
+.card .cap{font-size:14px;color:var(--ink-2);margin:0;text-wrap:pretty}
+.paper .kicker,.paper .big{color:var(--gold)}
+.hand .kicker,.hand .big{color:var(--green)}
+.quit .kicker,.quit .big{color:var(--red)}
+.rows{display:grid;gap:6px;font-size:14px;color:var(--ink-2);margin-top:6px;padding-top:10px;border-top:1px solid var(--rule)}
+.rows div{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.rows span{flex:1 1 auto;min-width:0}
+.rows b{font-family:var(--mono);font-weight:500;color:var(--ink);flex:0 0 auto;max-width:58%;text-align:right;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.rows .bad b{color:var(--red)}
+.rows .good b{color:var(--green)}
+.stamp{position:absolute;top:50px;right:16px;transform:rotate(-9deg);border:2px solid var(--red);color:var(--red);font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:4px 8px;opacity:.9;background:var(--sheet)}
+.alt{font-size:13px;color:var(--ink-2);margin:4px 0 0;padding:10px 12px;background:var(--green-soft);text-wrap:pretty}
+.alt b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.pop{animation:pop .4s ease-out}
+@keyframes pop{from{transform:translateY(6px);opacity:.3}to{transform:none;opacity:1}}
+
+/* Ledger */
+.ledger{margin-top:22px;background:var(--sheet);border:1px solid var(--rule);padding:18px 20px 16px}
+.ledger h2,.gap h2,.tally h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0 0 4px}
+.ledger p{margin:0 0 12px;font-size:14px;color:var(--ink-2)}
+.bar{display:flex;height:36px;border:1px solid var(--rule);overflow:hidden;background:var(--paper)}
+.bar span{display:block;height:100%;min-width:0;transition:width .4s ease}
+.bar .s-dil{background:var(--slate)} .bar .s-str{background:var(--blue)} .bar .s-ptx{background:var(--red)} .bar .s-cgt{background:var(--red);opacity:.6} .bar .s-net{background:var(--green)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin:12px 0 0;padding:0;list-style:none;font-size:14px}
+.legend li{display:flex;align-items:center;gap:8px;min-width:0}
+.legend i{width:12px;height:12px;flex:none;display:inline-block;border:1px solid var(--rule)}
+.legend b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* Gap + share */
+.gap{margin-top:22px;background:var(--sheet);border:1px solid var(--rule);padding:18px 20px 20px}
+.verdict{font-family:var(--display);font-size:clamp(22px,3.2vw,30px);line-height:1.3;margin:0 0 14px;text-wrap:pretty}
+.verdict b{font-weight:400;font-variant-numeric:tabular-nums}
+.verdict .hi{color:var(--red)} .verdict .lo{color:var(--green)}
+.share{width:100%;font:14px/1.55 var(--mono);background:var(--paper);border:1px solid var(--rule);padding:12px;color:var(--ink);resize:vertical;min-height:160px;display:block}
+.share-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.share-row span{font-size:13px;color:var(--ink-2)}
+
+/* Tally */
+.tally{margin-top:22px;padding:16px 20px;border:1px dashed var(--rule)}
+.tally-row{display:flex;flex-wrap:wrap;gap:10px 32px;align-items:baseline;margin-top:6px}
+.tally-row div{font-size:13px;color:var(--ink-2)}
+.tally-row b{display:block;font-family:var(--display);font-weight:400;font-size:30px;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.tally p.fine-print{margin:10px 0 0;font-size:12px;color:var(--ink-2)}
+
+/* Rules + patches */
+.rules{margin-top:36px;border-top:1px solid var(--rule);padding-top:20px}
+.rules summary{cursor:pointer;font-family:var(--display);font-size:26px;list-style:none;display:flex;align-items:center;gap:10px}
+.rules summary::-webkit-details-marker{display:none}
+.rules summary::before{content:"+";font-family:var(--mono);color:var(--green);font-size:22px}
+.rules[open] summary::before{content:"–"}
+.rules .body{max-width:72ch;margin-top:12px;font-size:15px}
+.rules h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:18px 0 6px}
+.rules ul{padding-left:20px;margin:0}
+.rules li{margin:0 0 6px}
+.rules a{color:var(--green)}
+.patches{margin-top:36px;border-top:1px solid var(--rule);padding-top:20px}
+.patches h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 6px}
+.patches p{max-width:70ch;margin:0 0 12px;color:var(--ink-2);font-size:15px}
+.patches ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px 20px;font-size:15px}
+.patches li{display:flex;gap:10px;align-items:baseline}
+.patches li i{font-family:var(--mono);font-style:normal;color:var(--ink-2);flex:none}
+.patches li.done i{color:var(--green)}
+.patches li.done{color:var(--ink-2)}
+.changelog{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:14px}
+
+footer{margin-top:40px;border-top:1px solid var(--rule);padding-block:22px 40px;font-size:13px;color:var(--ink-2)}
+footer p{max-width:72ch;margin:0 0 8px}
+footer a{color:var(--green)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <p class="eyebrow">An ESOP reality check · India · v1.0</p>
+    <h1>Paper Crorepati</h1>
+    <p class="lede">Your stock options on paper, in your bank account, and if you quit at month 18. Fill in the grant letter. Nothing you type leaves your browser.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="letter" aria-labelledby="letter-h">
+    <div class="letter-head"><span>Grant letter</span><span>Edit the blanks</span></div>
+    <h2 id="letter-h" class="sr-only">Your grant</h2>
+    <p class="line">You hold <input id="opts" class="w8" inputmode="numeric" value="10000" aria-label="Number of options"> options at an exercise price of ₹<input id="strike" inputmode="decimal" value="100" aria-label="Exercise price per share"> per share. The latest fair market value is ₹<input id="fmv" inputmode="decimal" value="1200" aria-label="Fair market value per share"> per share.</p>
+    <p class="line">They vest over <input id="years" inputmode="numeric" value="4" aria-label="Vesting years"> years with a <input id="cliff" inputmode="numeric" value="12" aria-label="Cliff in months">-month cliff, then
+      <select id="freq" aria-label="Vesting frequency after the cliff"><option value="12">annually</option><option value="3">quarterly</option><option value="1">monthly</option></select>.</p>
+    <p class="line">You expect the company to grow <input id="mult" inputmode="decimal" value="3" aria-label="Growth multiple">× in value over the next <input id="exitYears" inputmode="numeric" value="4" aria-label="Years to exit"> years, after <input id="dilution" inputmode="numeric" value="20" aria-label="Dilution percent">% dilution from future funding rounds.</p>
+
+    <div class="fine">
+      <label>Company
+        <select id="listed"><option value="unlisted">Unlisted startup</option><option value="listed">Listed company</option></select></label>
+      <label>Section 140 (old 80-IAC) startup certificate
+        <select id="eligible"><option value="no">No, or don't know (98% of startups)</option><option value="yes">Yes, IMB-certified</option></select></label>
+      <label>Your tax bracket in the year you exercise
+        <select id="bracket"><option value="auto">Decide from the gain size (surcharge applies)</option><option value="0.312">30% slab, income up to ₹50 L: 31.2%</option><option value="0.3432">₹50 L to ₹1 Cr: 34.32%</option><option value="0.3588">₹1 Cr to ₹2 Cr: 35.88%</option><option value="0.39">Above ₹2 Cr: 39%</option></select></label>
+      <label>When you exercise
+        <select id="strategy"><option value="exit">At exit, and sell the same day</option><option value="now">Now, and hold until exit</option></select></label>
+      <label>Exercise window after you leave
+        <select id="window"><option value="90">90 days (most plans)</option><option value="30">30 days</option><option value="180">180 days</option><option value="365">1 year</option><option value="exit">Until exit (extended window)</option></select></label>
+    </div>
+
+    <div class="guess">
+      <label for="guess">Before you run it, an honest guess: how much will these ESOPs actually put in your bank account?</label>
+      <div class="guess-row">₹ <input id="guess" placeholder="1.5 Cr, or 60 L" aria-describedby="guessEcho"> <span class="echo" id="guessEcho">Lakhs or crores both work.</span></div>
+    </div>
+
+    <div class="actions">
+      <button id="run" class="btn" type="button">Run the numbers</button>
+      <p class="privacy">Only a play count and a bucketed guess-vs-reality gap are recorded. No names, no inputs.</p>
+    </div>
+  </section>
+
+  <section class="results" id="results" aria-live="polite">
+    <p class="note" id="exampleNote">Example grant shown. Edit the letter to make it yours.</p>
+    <div class="cards">
+      <article class="card paper">
+        <div class="kicker"><span>On paper</span><em>the town-hall number</em></div>
+        <p class="big" id="paperBig">₹0</p>
+        <p class="cap" id="paperCap"></p>
+        <div class="rows">
+          <div><span>Today, at the latest FMV</span><b id="paperToday"></b></div>
+          <div><span>Exit price per share, after dilution</span><b id="exitPrice"></b></div>
+        </div>
+      </article>
+      <article class="card hand">
+        <div class="kicker"><span>In hand</span><em id="handTag">stay the full term, exit happens</em></div>
+        <p class="big" id="handBig">₹0</p>
+        <p class="cap" id="handCap"></p>
+        <div class="rows" id="handRows"></div>
+        <p class="alt" id="handAlt"></p>
+      </article>
+      <article class="card quit">
+        <div class="kicker"><span>Quit at month 18</span></div>
+        <span class="stamp" id="stamp">Vested 0%</span>
+        <p class="big" id="quitBig">₹0</p>
+        <p class="cap" id="quitCap"></p>
+        <div class="rows" id="quitRows"></div>
+      </article>
+    </div>
+
+    <section class="ledger" aria-labelledby="ledger-h">
+      <h2 id="ledger-h">Where the paper goes</h2>
+      <p id="ledgerCap">From the town-hall number to your bank account.</p>
+      <div class="bar" id="bar" role="img" aria-label="Breakdown of the paper value"></div>
+      <ul class="legend" id="legend"></ul>
+    </section>
+
+    <section class="gap" aria-labelledby="gap-h">
+      <h2 id="gap-h">Your gap</h2>
+      <p class="verdict" id="verdict">Add a guess in the letter to see how far off you were.</p>
+      <label class="sr-only" for="shareText">Result text to copy</label>
+      <textarea class="share" id="shareText" readonly></textarea>
+      <div class="share-row">
+        <button class="btn ghost" id="copy" type="button">Copy my result</button>
+        <span>Paste it in the comments. Then argue with my assumptions.</span>
+      </div>
+    </section>
+
+    <section class="tally" id="tally" aria-labelledby="tally-h">
+      <h2 id="tally-h">The scoreboard</h2>
+      <div class="tally-row">
+        <div><b id="tPlays">–</b>people ran the numbers</div>
+        <div><b id="tOver">–</b>guessed too high</div>
+        <div><b id="tMedian">–</b>median miss</div>
+      </div>
+      <p class="fine-print">Anonymous counts only. The site stores no names, no grant details and no cookies.</p>
+    </section>
+  </section>
+
+  <details class="rules">
+    <summary>The rules behind the numbers</summary>
+    <div class="body">
+      <h3>At exercise</h3>
+      <ul>
+        <li>The perquisite is (fair market value on the exercise date minus your exercise price) × shares. It is taxed as salary at your slab, with 4% cess, and surcharge when your income for the year crosses ₹50 L (10%), ₹1 Cr (15%) or ₹2 Cr (25%, the new-regime cap). "Decide from the gain size" applies the surcharge band that the ESOP gain alone would put you in.</li>
+        <li>For unlisted shares the FMV comes from a SEBI Category-I merchant banker report not older than 180 days. For listed shares it is the market price.</li>
+        <li>If you exercise at exit and sell the same day, the whole gain is perquisite. If you exercise early, only the gain up to that day's FMV is perquisite, and the rest is capital gain later. That is why "exercise now" can net more, at the cost of real cash today and the risk that the exit never comes.</li>
+      </ul>
+      <h3>Startup deferral</h3>
+      <ul>
+        <li>Only an employee of a DPIIT-recognised startup that also holds an Inter-Ministerial Board certificate under Section 140 of the Income-tax Act, 2025 (Section 80-IAC of the 1961 Act) can defer the perquisite tax. The amount does not change, only the date. It becomes payable at the earliest of: you sell the shares, you leave the company, or 60 months pass from the end of the tax year of allotment (48 months under the old Act).</li>
+        <li>About 3,700 of roughly 1.97 lakh DPIIT startups held that certificate as of April 2025, so the default here is "no".</li>
+        <li>Leaving the company ends the deferral, so the month-18 card never uses it.</li>
+      </ul>
+      <h3>At sale</h3>
+      <ul>
+        <li>Your cost of acquisition is the FMV used for the perquisite, so you are not taxed twice on the same rupee.</li>
+        <li>Unlisted shares held more than 24 months: long-term, 12.5% without indexation, no ₹1.25 L exemption. Held 24 months or less: short-term, at your slab.</li>
+        <li>Listed shares held more than 12 months: 12.5% on gains above ₹1.25 L. Held 12 months or less: 20%. Cess of 4% is added to both. Surcharge on capital gains is ignored here.</li>
+      </ul>
+      <h3>Exit price and vesting</h3>
+      <ul>
+        <li>Exit price per share = today's FMV × growth multiple × (1 minus dilution). Dilution is the share of the company sold to future investors before the exit.</li>
+        <li>Vesting follows your schedule. With a 12-month cliff and annual vesting, month 18 means one year's tranche. Monthly vesting after the cliff would give 37.5% at month 18 on a 4-year plan.</li>
+        <li>When you leave, most plans give 30 to 90 days to exercise what has vested. You pay the exercise price and the perquisite tax then, in cash, with no sale to fund it. Unexercised options lapse. Unvested options are gone the day you leave.</li>
+      </ul>
+      <h3>Sources, checked 5 November 2026</h3>
+      <ul>
+        <li><a href="https://treelife.in/taxation/esop-taxation-in-india/" rel="noopener" target="_blank">Treelife, ESOP taxation in India (updated June 2026)</a>, including the Income-tax Act 2025 section map.</li>
+        <li><a href="https://www.caclubindia.com/articles/esop-for-foreignowned-indian-subsidiaries-tax-deferral-extended-to-60-months-in-2026-55829.asp" rel="noopener" target="_blank">CAclubindia, deferral extended to 60 months (June 2026)</a>.</li>
+        <li><a href="https://www.incometaxindia.gov.in/income-from-business/profession-taxation-of-start-ups" rel="noopener" target="_blank">Income Tax Department, taxation of start-ups</a>.</li>
+      </ul>
+      <p>This is an illustration, not tax advice. Your plan document, your valuation report and your CA decide the real numbers.</p>
+    </div>
+  </details>
+
+  <section class="patches" aria-labelledby="patch-h">
+    <h2 id="patch-h">The patch list</h2>
+    <p>Version 1.0 models the three things most offer letters never mention. Each argument in the comments becomes a patch. Tell me what the model gets wrong.</p>
+    <ul>
+      <li class="done"><i>[x]</i>Post-exit exercise windows</li>
+      <li class="done"><i>[x]</i>Section 140 / 80-IAC deferral</li>
+      <li class="done"><i>[x]</i>Surcharge bands and cess</li>
+      <li><i>[ ]</i>Buybacks at a discount to FMV</li>
+      <li><i>[ ]</i>Secondary sales before the exit</li>
+      <li><i>[ ]</i>Liquidation preference in a small exit</li>
+      <li><i>[ ]</i>Acceleration on acquisition</li>
+      <li><i>[ ]</i>RSUs and SARs, with their different tax timing</li>
+      <li><i>[ ]</i>Cashless exercise mechanics</li>
+    </ul>
+    <p class="changelog">v1.0 · 5 Nov 2026 · first public version</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Made by Pranay Nagpal, a CHRO who has signed a lot of grant letters. The defaults are an invented grant, not anyone's real one. Views are mine, not my employer's. Not tax advice.</p>
+    <p>Everything is computed in your browser. The only thing sent anywhere is an anonymous tick to a public hit counter: one for the play, one for which gap bucket your guess fell in.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var SITE = 'https://pranaynagpal-create.github.io/paper-crorepati/';
+  var API = 'https://abacus.jasoncameron.dev';
+  var NS = 'pranaynagpal-create.github.io';
+  var KEY = 'pc-';
+  var BUCKETS = 11; // 0 = guessed too low, 1..10 = 0-10% ... 90%+ too high
+  var LTCG = 0.125 * 1.04, STCG_LISTED = 0.20 * 1.04, LISTED_EXEMPT = 125000;
+
+  function num(id, def, min, max){
+    var v = parseFloat(String($(id).value).replace(/,/g,''));
+    if (!isFinite(v)) v = def;
+    return Math.min(max, Math.max(min, v));
+  }
+  function parseMoney(s){
+    if (!s) return 0;
+    var t = String(s).toLowerCase().replace(/[₹,\s]/g,'');
+    var m = t.match(/^([0-9]*\.?[0-9]+)(cr|crore|crores|c|l|lakh|lakhs|lac|lacs|k|thousand)?$/);
+    if (!m) return 0;
+    var v = parseFloat(m[1]); var u = m[2] || '';
+    if (/^c/.test(u)) v *= 1e7; else if (/^l/.test(u)) v *= 1e5; else if (/^(k|thousand)$/.test(u)) v *= 1e3;
+    return isFinite(v) ? v : 0;
+  }
+  function indian(n){
+    n = Math.round(n); var s = String(Math.abs(n)); var last3 = s.slice(-3); var rest = s.slice(0,-3);
+    if (rest) last3 = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + last3;
+    return (n < 0 ? '-' : '') + last3;
+  }
+  function fmt(n){
+    var a = Math.abs(n), sign = n < 0 ? '-' : '';
+    if (a >= 1e7) return sign + '₹' + trim((a/1e7).toFixed(a >= 1e8 ? 1 : 2)) + ' Cr';
+    if (a >= 1e5) return sign + '₹' + trim((a/1e5).toFixed(a >= 1e6 ? 1 : 2)) + ' L';
+    return sign + '₹' + indian(a);
+  }
+  function trim(s){ return s.replace(/\.?0+$/,''); }
+  function pct(x){ return Math.round(x*100) + '%'; }
+  function autoRate(gain){ return gain > 2e7 ? 0.39 : gain > 1e7 ? 0.3588 : gain > 5e6 ? 0.3432 : 0.312; }
+  function rateLabel(r){ return Math.round(r*10000)/100 + '%'; }
+  function vest(m, years, cliff, step){
+    var T = years*12; if (T <= 0) return 1; if (m < cliff) return 0;
+    var sched = Math.floor(m/step)*step;
+    return Math.min(T, Math.max(cliff, sched)) / T;
+  }
+  function cgTax(gain, months, listed, rSal){
+    var lt = listed ? months > 12 : months > 24;
+    var taxable = gain; if (listed && lt) taxable = Math.max(0, gain - LISTED_EXEMPT);
+    var rate = lt ? LTCG : (listed ? STCG_LISTED : rSal);
+    return { tax: gain > 0 ? taxable*rate : 0, lt: lt, rate: rate };
+  }
+
+  function read(){
+    var brk = $('bracket').value;
+    return {
+      N: Math.round(num('opts', 10000, 1, 1e8)), K: num('strike', 100, 0, 1e7), P0: num('fmv', 1200, 0.01, 1e7),
+      years: num('years', 4, 1, 10), cliff: num('cliff', 12, 0, 48), step: parseInt($('freq').value, 10),
+      M: num('mult', 3, 0.1, 100), Y: num('exitYears', 4, 1, 15), D: num('dilution', 20, 0, 80)/100,
+      listed: $('listed').value === 'listed', eligible: $('eligible').value === 'yes',
+      rate: brk === 'auto' ? null : parseFloat(brk),
+      strategy: $('strategy').value, win: $('window').value,
+      guess: parseMoney($('guess').value)
+    };
+  }
+
+  function stay(i, strategy){
+    var N = i.N, K = i.K, P0 = i.P0, Pexit = i.Pexit, B = { strategy: strategy };
+    if (strategy === 'exit') {
+      var perq = Math.max(0, N*(Pexit-K));
+      B.rSal = i.rate || autoRate(perq);
+      B.underwater = Pexit <= K;
+      B.strike = B.underwater ? 0 : N*K;
+      B.perqTax = perq * B.rSal;
+      B.cg = { tax: 0, lt: false, rate: 0 }; B.cashNow = 0; B.deferred = false;
+      B.net = B.underwater ? 0 : N*Pexit - B.strike - B.perqTax;
+    } else {
+      var perqNow = Math.max(0, N*(P0-K));
+      B.rSal = i.rate || autoRate(perqNow);
+      B.underwater = false;
+      B.perqTax = perqNow * B.rSal;
+      B.deferred = i.eligible && i.Y <= 5;
+      B.strike = N*K;
+      B.cashNow = B.strike + (B.deferred ? 0 : B.perqTax);
+      B.cg = cgTax(N*(Pexit-P0), i.Y*12, i.listed, B.rSal);
+      B.net = N*Pexit - B.strike - B.perqTax - B.cg.tax;
+    }
+    return B;
+  }
+
+  function compute(i){
+    i.Pexit = i.P0 * i.M * (1 - i.D);
+    var r = { i: i, Pexit: i.Pexit, paperToday: i.N*i.P0, paperExit: i.N*i.P0*i.M };
+    r.dilutionCut = r.paperExit * i.D;
+    r.B = stay(i, i.strategy);
+    r.alt = stay(i, i.strategy === 'exit' ? 'now' : 'exit');
+    var f = vest(18, i.years, i.cliff, i.step), vN = Math.floor(i.N*f);
+    var C = { f: f, vN: vN, unv: i.N - vN, forfeit: (i.N - vN) * i.Pexit, win: i.win };
+    if (i.win === 'exit') {
+      var perqX = Math.max(0, vN*(i.Pexit - i.K)); C.rSal = i.rate || autoRate(perqX);
+      C.cash = 0; C.strike = 0; C.perqTax = perqX * C.rSal; C.cg = { tax: 0, lt: false, rate: 0 };
+      C.net = i.Pexit > i.K ? vN*(i.Pexit - i.K) - C.perqTax : 0;
+    } else {
+      var perqC = Math.max(0, vN*(i.P0 - i.K)); C.rSal = i.rate || autoRate(perqC);
+      C.perqTax = perqC * C.rSal; C.strike = vN*i.K; C.cash = C.strike + C.perqTax;
+      C.cg = cgTax(vN*(i.Pexit - i.P0), Math.max(0, i.Y*12 - 18), i.listed, C.rSal);
+      C.net = vN*i.Pexit - C.cash - C.cg.tax;
+    }
+    r.C = C;
+    return r;
+  }
+
+  function row(label, value, cls){ return '<div class="'+(cls||'')+'"><span>'+label+'</span><b>'+value+'</b></div>'; }
+  function bump(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+
+  function render(r){
+    var i = r.i, B = r.B, C = r.C;
+    $('paperBig').textContent = fmt(r.paperExit);
+    $('paperCap').textContent = indian(i.N) + ' options × ₹' + indian(i.P0) + ' FMV × ' + trim(String(i.M)) + ' growth, before dilution, cost or tax.';
+    $('paperToday').textContent = fmt(r.paperToday);
+    $('exitPrice').textContent = '₹' + indian(r.Pexit);
+
+    $('handTag').textContent = B.strategy === 'exit' ? 'stay ' + trim(String(i.Y)) + ' years, exercise at exit' : 'exercise now, hold ' + trim(String(i.Y)) + ' years';
+    var rows = '';
+    if (B.underwater) {
+      $('handBig').textContent = '₹0';
+      $('handCap').textContent = 'Underwater. The exit price (₹' + indian(r.Pexit) + ') is below your exercise price, so you would not exercise at all.';
+    } else {
+      $('handBig').textContent = fmt(B.net);
+      $('handCap').textContent = pct(B.net / r.paperExit) + ' of the paper number reaches your bank account.';
+      rows += row('Lost to dilution', '−' + fmt(r.dilutionCut), 'bad');
+      rows += row('Exercise price you pay', '−' + fmt(B.strike), 'bad');
+      rows += row('Perquisite tax at ' + rateLabel(B.rSal) + (B.deferred ? ', paid at sale' : ''), '−' + fmt(B.perqTax), 'bad');
+      if (B.strategy === 'now') {
+        rows += row((B.cg.lt ? 'Long-term' : 'Short-term') + ' capital gains tax at ' + rateLabel(B.cg.rate), '−' + fmt(B.cg.tax), 'bad');
+        rows += row('Cash you must put in today', fmt(B.cashNow), 'bad');
+      } else {
+        rows += row('Capital gains tax, sold the same day', '₹0');
+      }
+    }
+    $('handRows').innerHTML = rows;
+    var A = r.alt;
+    if (B.underwater || A.underwater) {
+      $('handAlt').hidden = true;
+    } else {
+      $('handAlt').hidden = false;
+      $('handAlt').innerHTML = B.strategy === 'exit'
+        ? 'The other path: exercise now and hold, and you would net <b>' + fmt(A.net) + '</b>, but it needs <b>' + fmt(A.cashNow) + '</b> of your own cash today' + (A.deferred ? ' (tax deferred to sale under Section 140)' : '') + ', at risk if the exit never comes.'
+        : 'The other path: wait and exercise at exit, and you would net <b>' + fmt(A.net) + '</b> with no cash at risk today.';
+    }
+
+    $('stamp').textContent = 'Vested ' + pct(C.f);
+    var q = '';
+    if (C.vN === 0) {
+      $('quitBig').textContent = '₹0';
+      $('quitCap').textContent = 'Nothing has vested by month 18 on this schedule. You leave with the memory of a town hall.';
+      q += row('Left behind: ' + indian(C.unv) + ' options, at exit price', fmt(C.forfeit), 'bad');
+    } else if (C.win === 'exit') {
+      $('quitBig').textContent = fmt(C.net);
+      $('quitCap').textContent = indian(C.vN) + ' of ' + indian(i.N) + ' options vested. Your plan lets you hold them until the exit, so you pay nothing now.';
+      q += row('Perquisite tax at exit, ' + rateLabel(C.rSal), '−' + fmt(C.perqTax), 'bad');
+      q += row('Left behind: ' + indian(C.unv) + ' unvested options, at exit price', fmt(C.forfeit), 'bad');
+    } else {
+      $('quitBig').textContent = fmt(C.net);
+      $('quitCap').textContent = indian(C.vN) + ' of ' + indian(i.N) + ' options vested. This is what you keep if you pay up and the exit still happens.';
+      q += row('Cash to find within ' + C.win + ' days', fmt(C.cash), 'bad');
+      q += row('(exercise price ' + fmt(C.strike) + ' + perquisite tax ' + fmt(C.perqTax) + ')', '');
+      q += row((C.cg.lt ? 'Long-term' : 'Short-term') + ' capital gains tax later at ' + rateLabel(C.cg.rate), '−' + fmt(C.cg.tax), 'bad');
+      q += row("Can't find the cash? The options lapse.", '₹0', 'bad');
+      q += row('Left behind: ' + indian(C.unv) + ' unvested options, at exit price', fmt(C.forfeit), 'bad');
+    }
+    $('quitRows').innerHTML = q;
+
+    // ledger
+    var segs = [];
+    if (!B.underwater) {
+      segs = [
+        { k: 's-dil', label: 'Dilution', v: r.dilutionCut },
+        { k: 's-str', label: 'Exercise price', v: B.strike },
+        { k: 's-ptx', label: 'Perquisite tax', v: B.perqTax },
+        { k: 's-cgt', label: 'Capital gains tax', v: B.cg.tax },
+        { k: 's-net', label: 'In hand', v: Math.max(0, B.net) }
+      ];
+      var total = segs.reduce(function(a, s){ return a + s.v; }, 0) || 1;
+      $('bar').innerHTML = segs.map(function(s){ return '<span class="'+s.k+'" style="width:'+(s.v/total*100).toFixed(2)+'%" title="'+s.label+': '+fmt(s.v)+'"></span>'; }).join('');
+      $('legend').innerHTML = segs.filter(function(s){ return s.v > 0; }).map(function(s){ return '<li><i class="'+s.k+'" style="background:var(--'+({ 's-dil':'slate','s-str':'blue','s-ptx':'red','s-cgt':'red','s-net':'green' })[s.k]+')"></i>'+s.label+' <b>'+fmt(s.v)+'</b> ('+pct(s.v/total)+')</li>'; }).join('');
+      $('ledgerCap').textContent = 'From ' + fmt(r.paperExit) + ' on paper to ' + fmt(B.net) + ' in your bank account.';
+    } else {
+      $('bar').innerHTML = ''; $('legend').innerHTML = '';
+      $('ledgerCap').textContent = 'Nothing to split: the options are underwater at this exit price.';
+    }
+
+    // gap + share
+    var gapLine = '';
+    if (i.guess > 0 && !B.underwater) {
+      var gp = (i.guess - B.net) / i.guess * 100;
+      var over = i.guess >= B.net;
+      $('verdict').innerHTML = 'You guessed <b>' + fmt(i.guess) + '</b>. In hand: <b>' + fmt(B.net) + '</b>. You were <b class="' + (over ? 'hi' : 'lo') + '">' + Math.abs(Math.round(gp)) + '% too ' + (over ? 'high' : 'low') + '</b>.';
+      gapLine = 'My guess was ' + Math.abs(Math.round(gp)) + '% too ' + (over ? 'high' : 'low') + '.';
+    } else if (i.guess > 0 && B.underwater) {
+      $('verdict').innerHTML = 'You guessed <b>' + fmt(i.guess) + '</b>. In hand: <b>₹0</b>, the options are underwater at this exit price.';
+      gapLine = 'My guess was ' + fmt(i.guess) + '. Reality: underwater.';
+    } else {
+      $('verdict').textContent = 'Add a guess in the letter to see how far off you were.';
+    }
+    var quitLine = C.vN === 0 ? '₹0 (nothing vested)' : C.win === 'exit' ? fmt(C.net) + ' (hold until exit)' : fmt(C.net) + ', after finding ' + fmt(C.cash) + ' within ' + C.win + ' days';
+    $('shareText').value = [
+      'Paper Crorepati, my ESOP reality check',
+      'On paper at a ' + trim(String(i.M)) + '× exit: ' + fmt(r.paperExit),
+      'In hand after cost and tax: ' + (B.underwater ? '₹0 (underwater)' : fmt(B.net)),
+      'If I quit at month 18: ' + quitLine,
+      gapLine,
+      'Run yours: ' + SITE
+    ].filter(Boolean).join('\n');
+
+    ['paperBig','handBig','quitBig'].forEach(function(id){ bump($(id)); });
+  }
+
+  // ---- scoreboard (anonymous hit counters) ----
+  var stats = null, counted = false;
+  function key(k){ return API + '/' + k; }
+  function getCount(k){
+    return fetch(key('get/' + NS + '/' + KEY + k), { cache: 'no-store' })
+      .then(function(r){ return r.ok ? r.json() : { value: 0 }; })
+      .then(function(j){ return (j && typeof j.value === 'number') ? j.value : 0; })
+      .catch(function(){ return 0; });
+  }
+  function hit(k){
+    return fetch(key('hit/' + NS + '/' + KEY + k), { cache: 'no-store' })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){ return (j && typeof j.value === 'number') ? j.value : null; })
+      .catch(function(){ return null; });
+  }
+  function bucketName(b){ return b === 0 ? 'guessed too low' : b === 10 ? '90%+ too high' : ((b-1)*10) + '–' + (b*10) + '% too high'; }
+  function showStats(){
+    if (!stats) { $('tally').hidden = true; return; }
+    $('tally').hidden = false;
+    $('tPlays').textContent = indian(stats.plays);
+    var total = stats.b.reduce(function(a, x){ return a + x; }, 0);
+    if (total === 0) { $('tOver').textContent = '–'; $('tMedian').textContent = '–'; return; }
+    var over = total - stats.b[0];
+    $('tOver').textContent = Math.round(over/total*100) + '%';
+    var cum = 0, med = 0;
+    for (var k = 0; k < BUCKETS; k++) { cum += stats.b[k]; if (cum >= total/2) { med = k; break; } }
+    $('tMedian').textContent = bucketName(med);
+  }
+  function loadStats(){
+    var keys = ['plays']; for (var k = 0; k < BUCKETS; k++) keys.push('g' + (k < 10 ? '0' : '') + k);
+    Promise.all(keys.map(getCount)).then(function(vals){
+      stats = { plays: vals[0], b: vals.slice(1) };
+      showStats();
+    }).catch(function(){ stats = null; showStats(); });
+  }
+  function record(i, B){
+    if (counted) return; counted = true;
+    var tasks = [hit('plays').then(function(v){ if (stats && v !== null) stats.plays = v; })];
+    if (i.guess > 0 && !B.underwater) {
+      var gp = (i.guess - B.net) / i.guess * 100;
+      var b = gp < 0 ? 0 : Math.min(10, Math.floor(gp/10) + 1);
+      tasks.push(hit('g' + (b < 10 ? '0' : '') + b).then(function(v){ if (stats && v !== null) stats.b[b] = v; }));
+    }
+    Promise.all(tasks).then(showStats);
+  }
+
+  // ---- wiring ----
+  function run(fromUser){
+    var i = read(); var r = compute(i); render(r);
+    if (fromUser) { $('exampleNote').textContent = 'Your grant. Change any blank and run it again.'; record(i, r.B); }
+  }
+  $('run').addEventListener('click', function(){ run(true); $('results').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  $('guess').addEventListener('input', function(){
+    var v = parseMoney(this.value);
+    $('guessEcho').textContent = v > 0 ? '= ₹' + indian(v) + ' (' + fmt(v) + ')' : 'Lakhs or crores both work.';
+  });
+  document.querySelectorAll('.letter input, .letter select').forEach(function(el){
+    el.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); $('run').click(); } });
+  });
+  $('copy').addEventListener('click', function(){
+    var ta = $('shareText'), btn = this;
+    function done(ok){ btn.textContent = ok ? 'Copied' : 'Select and copy the text above'; setTimeout(function(){ btn.textContent = 'Copy my result'; }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ta.value).then(function(){ done(true); }, function(){ ta.focus(); ta.select(); done(false); });
+    } else { ta.focus(); ta.select(); try { document.execCommand('copy'); done(true); } catch (e) { done(false); } }
+  });
+
+  run(false);
+  loadStats();
+  window._pc = { compute: compute, read: read, vest: vest, parseMoney: parseMoney, fmt: fmt };
+})();
+</script>
+</body>
+</html>
