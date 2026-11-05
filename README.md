@@ -7,7 +7,7 @@ Live: https://pranaynagpal-create.github.io/paper-crorepati/
 - Single file, no build: `index.html`. Open it locally or serve the folder.
 - All math runs in the browser. Nothing typed is sent anywhere.
 - Scoreboard: anonymous hit counters on the public Abacus service (namespace `pranaynagpal-create.github.io`, keys `pc-plays` and `pc-g00`..`pc-g10` for the guess-vs-reality gap buckets). No names, no inputs, no cookies.
-- `og.png` is the LinkedIn link preview (regenerate with the script in the session notes if the example numbers change).
+- `og.png` is the LinkedIn link preview (regenerate with `uv run --with pillow python og.py` if the example numbers change).
 - Tax rules and sources are listed on the page under "The rules behind the numbers" (checked 5 Nov 2026). Re-verify after every Budget.
 
 ## Patch loop

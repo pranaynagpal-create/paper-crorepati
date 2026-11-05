@@ -4,7 +4,7 @@
 
 HR told you your ESOPs are worth ₹1.2 crore.
 
-I built a 30-second calculator that tells you what actually reaches your bank account. Three cards:
+I built a 30-second calculator that tells you what actually reaches your bank account. Three numbers:
 
 1. On paper: the number from the town hall.
 2. In hand: after dilution, exercise price, perquisite tax at your slab, and capital gains tax.
